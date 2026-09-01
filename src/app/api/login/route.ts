@@ -2,15 +2,22 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSession } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
-  const { username, password } = await req.json()
+  try {
+    const { username, password } = await req.json()
 
-  if (
-    username === process.env.ADMIN_USERNAME &&
-    password === process.env.ADMIN_PASSWORD
-  ) {
-    await createSession()
-    return NextResponse.json({ success: true })
+    const adminUser = process.env.ADMIN_USERNAME || 'regsxd'
+    const adminPass = process.env.ADMIN_PASSWORD || 'leaimut'
+
+    if (
+      String(username).trim() === adminUser &&
+      String(password).trim() === adminPass
+    ) {
+      await createSession()
+      return NextResponse.json({ success: true })
+    }
+
+    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+  } catch {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
-
-  return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
 }
