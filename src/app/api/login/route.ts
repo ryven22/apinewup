@@ -5,8 +5,8 @@ export async function POST(req: NextRequest) {
   try {
     const { username, password } = await req.json()
 
-    const adminUser = process.env.ADMIN_USERNAME || 'regsxd'
-    const adminPass = process.env.ADMIN_PASSWORD || 'leaimut'
+    const adminUser = (process.env.ADMIN_USERNAME || 'regsxd').trim()
+    const adminPass = (process.env.ADMIN_PASSWORD || 'leaimut').trim()
 
     if (
       String(username).trim() === adminUser &&
