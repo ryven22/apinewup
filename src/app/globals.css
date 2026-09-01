@@ -1,0 +1,99 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --surface2: #1a1a1a;
+  --border: #2a2a2a;
+  --red: #ff1212;
+  --red-dim: #cc0a0a;
+  --red-glow: rgba(255,18,18,0.15);
+  --text: #f0f0f0;
+  --text-dim: #888888;
+  --green: #22c55e;
+  --yellow: #f59e0b;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: all 0.15s;
+}
+
+input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 10px 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input:focus { border-color: var(--red); }
+input::placeholder { color: var(--text-dim); }
+
+select {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 10px 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+select:focus { border-color: var(--red); }
+
+.btn-red {
+  background: var(--red);
+  color: #fff;
+  font-weight: 600;
+}
+.btn-red:hover { background: var(--red-dim); }
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.btn-ghost:hover { border-color: var(--red); color: var(--text); }
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid #ff444460;
+  color: #ff6666;
+  font-size: 12px;
+  padding: 4px 10px;
+}
+.btn-danger:hover { background: #ff11110a; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-green { background: #22c55e20; color: var(--green); border: 1px solid #22c55e40; }
+.badge-red   { background: #ff121220; color: var(--red);   border: 1px solid #ff121240; }
+.badge-yellow{ background: #f59e0b20; color: var(--yellow); border: 1px solid #f59e0b40; }
+.badge-gray  { background: #88888820; color: var(--text-dim); border: 1px solid #88888840; }

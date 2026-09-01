@@ -1,0 +1,26 @@
+{
+  "name": "regsxd-keys",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "@supabase/supabase-js": "2.44.4",
+    "uuid": "10.0.0",
+    "bcryptjs": "2.4.3",
+    "jose": "5.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/bcryptjs": "2.4.6",
+    "@types/uuid": "10.0.0",
+    "typescript": "5.5.3"
+  }
+}
