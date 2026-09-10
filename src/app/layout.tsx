@@ -4,6 +4,10 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'MOD TOOLS — Key Management',
   description: 'License key dashboard for MOD TOOLS',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/logo.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
