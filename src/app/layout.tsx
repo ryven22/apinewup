@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'REGS XD — Key Management',
-  description: 'License key dashboard for REGS XD Explorer',
+  title: 'MOD TOOLS — Key Management',
+  description: 'License key dashboard for MOD TOOLS',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -2,10 +2,12 @@ import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
-const COOKIE_NAME = 'regsxd_session'
+const COOKIE_NAME = 'modtools_session'
 
-export async function createSession() {
-  const token = await new SignJWT({ admin: true })
+export type Role = 'admin' | 'owner'
+
+export async function createSession(role: Role = 'admin') {
+  const token = await new SignJWT({ role })
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('24h')
     .sign(secret)
@@ -20,13 +22,14 @@ export async function createSession() {
   })
 }
 
-export async function verifySession(): Promise<boolean> {
+export async function verifySession(): Promise<false | { role: Role }> {
   try {
     const cookieStore = await cookies()
     const token = cookieStore.get(COOKIE_NAME)?.value
     if (!token) return false
-    await jwtVerify(token, secret)
-    return true
+    const { payload } = await jwtVerify(token, secret)
+    const role = (payload.role as Role) || 'admin'
+    return { role }
   } catch {
     return false
   }
@@ -35,4 +38,11 @@ export async function verifySession(): Promise<boolean> {
 export async function deleteSession() {
   const cookieStore = await cookies()
   cookieStore.delete(COOKIE_NAME)
+}
+
+/** Returns the role of the current session, or null if not authenticated */
+export async function getSessionRole(): Promise<Role | null> {
+  const session = await verifySession()
+  if (!session) return null
+  return session.role
 }

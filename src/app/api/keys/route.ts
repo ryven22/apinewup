@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { verifySession } from '@/lib/auth'
-import { generateKey, daysToExpiry } from '@/lib/keygen'
+import { generateKey, daysToExpiry, VALID_DURATIONS } from '@/lib/keygen'
 
 // GET /api/keys — list all keys (dashboard)
 export async function GET() {
-  if (!(await verifySession())) {
+  const session = await verifySession()
+  if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -15,23 +16,28 @@ export async function GET() {
     .order('created_at', { ascending: false })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ keys: data })
+  return NextResponse.json({ keys: data, role: session.role })
 }
 
-// POST /api/keys — generate new key (dashboard)
-// Body: { duration_days: 1 | 7 | 30, note?: string, count?: number }
+// POST /api/keys — generate new key
+// Body: { duration_days: 1|3|7|30|40|0, note?: string, count?: number }
+// duration_days = 0 means "lifeteam"
 export async function POST(req: NextRequest) {
-  if (!(await verifySession())) {
+  const session = await verifySession()
+  if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const { duration_days, note, count = 1 } = await req.json()
 
-  if (![1, 7, 30].includes(duration_days)) {
-    return NextResponse.json({ error: 'duration_days must be 1, 7, or 30' }, { status: 400 })
+  if (!(VALID_DURATIONS as readonly number[]).includes(duration_days)) {
+    return NextResponse.json(
+      { error: 'duration_days must be 1, 3, 7, 30, 40, or 0 (lifeteam)' },
+      { status: 400 }
+    )
   }
 
-  const batchCount = Math.min(Math.max(1, count), 50) // max 50 at once
+  const batchCount = Math.min(Math.max(1, count), 50)
   const rows = Array.from({ length: batchCount }, () => ({
     key: generateKey(),
     duration_days,

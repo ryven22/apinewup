@@ -1,113 +1,47 @@
-# REGS XD — License Key System
+# MOD TOOLS — Key Management Dashboard
 
-Web dashboard + API + iOS integration for managing license keys.
-
----
-
-## Stack
-- **Web/API**: Next.js 14 + TypeScript
-- **Database**: Supabase (PostgreSQL)
-- **Hosting**: Vercel (free)
-- **iOS**: Swift (LicenseService + LicenseGateView)
+Black & white license key management platform built with Next.js + Supabase.
 
 ---
 
-## Setup — Step by Step
+## Accounts
 
-### 1. Supabase (database)
-
-1. Buka **supabase.com** → New Project
-2. Catat: `Project URL` dan `service_role` key (Settings → API)
-3. Buka **SQL Editor** → paste isi file `supabase_schema.sql` → Run
-
-### 2. Configure environment
-
-Edit file `.env.local`:
-```
-NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJxxxx...
-ADMIN_USERNAME=regsxd
-ADMIN_PASSWORD=leaimut
-JWT_SECRET=ganti-dengan-random-string-panjang
-```
-
-### 3. Deploy ke Vercel
-
-1. Push folder `regsxd-keys` ke GitHub repo baru
-2. Buka **vercel.com** → Import repo
-3. Add environment variables (sama seperti `.env.local`)
-4. Deploy → dapat URL misal `https://regsxd-keys.vercel.app`
-
-### 4. Akses dashboard
-
-Buka URL Vercel kamu → login dengan:
-- Username: `regsxd`
-- Password: `leaimut`
-
-### 5. Integrate ke iOS app
-
-**a. Copy files ke Xcode project:**
-- `ios/LicenseService.swift` → drag ke folder `helpers/`
-- `ios/LicenseGateView.swift` → drag ke folder `views/`
-
-**b. Update URL di LicenseService.swift:**
-```swift
-static let apiBaseURL = "https://regsxd-keys.vercel.app"  // ganti URL kamu
-```
-
-**c. Wrap ContentView di App.swift:**
-```swift
-// Sebelum:
-ContentView()
-
-// Sesudah:
-LicenseGateView {
-    ContentView()
-}
-```
+| Role  | Username        | Password  |
+|-------|-----------------|-----------|
+| Admin | adminmodtools   | admin1    |
+| Owner | ownermodtools   | aowner1   |
 
 ---
 
-## API Endpoints
+## Features
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/validate` | Validate key (iOS app) |
-| GET | `/api/keys` | List all keys (dashboard) |
-| POST | `/api/keys` | Generate keys (dashboard) |
-| DELETE | `/api/keys/[id]` | Delete key (dashboard) |
-| PATCH | `/api/keys/[id]` | Revoke/enable key (dashboard) |
-| POST | `/api/login` | Admin login |
-| POST | `/api/logout` | Admin logout |
+- **Admin** — generate, revoke, delete, and search license keys
+- **Owner** — everything admin can do + ban/unban admin accounts via Owner Panel
 
-### POST /api/validate (iOS)
-```json
-Request:  { "key": "REGS-XXXX-XXXX-XXXX", "device_id": "uuid" }
-Response: { "valid": true, "expires_at": "2026-09-08T...", "duration_days": 7 }
-Response: { "valid": false, "error": "Key has expired" }
-```
-
-### POST /api/keys (generate)
-```json
-Request:  { "duration_days": 7, "count": 5, "note": "VIP" }
-Response: { "keys": [...] }
-```
+### Owner Ban System
+If an admin abuses or corrupts keys, the owner can ban them from the Owner Panel (`/owner`).  
+Banned admins will be blocked at login with a reason message.
 
 ---
 
 ## Key Format
 
-`REGS-XXXX-XXXX-XXXX` — contoh: `REGS-A3F9-BC12-77DE`
+```
+MT-XXXX-XXXX-XXXX
+```
 
 ---
 
-## Fitur
+## Setup
 
-- ✅ Generate key 1 / 7 / 30 hari
-- ✅ Generate batch (sampai 50 sekaligus)
-- ✅ Key terikat ke device saat pertama aktivasi
-- ✅ Offline fallback (pakai cache kalau server tidak bisa dihubungi)
-- ✅ Revoke / enable key dari dashboard
-- ✅ Delete key
-- ✅ Cari key by nama, note, device ID
-- ✅ Stats: total, valid, activated, expired
+1. Copy `.env.local.example` → `.env.local` and fill in your values
+2. Run the SQL in `supabase_schema.sql` in your Supabase SQL Editor (includes `keys` and `banned_admins` tables)
+3. `npm install && npm run dev`
+
+---
+
+## iOS Integration
+
+See `ios/LicenseService.swift` and `ios/LicenseGateView.swift`.
+
+Validate endpoint: `POST /api/validate`

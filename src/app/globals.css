@@ -1,17 +1,18 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0a0a0a;
-  --surface: #111111;
+  --bg: #000000;
+  --surface: #0f0f0f;
   --surface2: #1a1a1a;
-  --border: #2a2a2a;
-  --red: #ff1212;
-  --red-dim: #cc0a0a;
-  --red-glow: rgba(255,18,18,0.15);
-  --text: #f0f0f0;
-  --text-dim: #888888;
+  --border: #2e2e2e;
+  --accent: #ffffff;
+  --accent-dim: #cccccc;
+  --accent-glow: rgba(255,255,255,0.08);
+  --text: #f5f5f5;
+  --text-dim: #777777;
   --green: #22c55e;
   --yellow: #f59e0b;
+  --red: #ff4444;
 }
 
 body {
@@ -46,7 +47,7 @@ input {
   transition: border-color 0.15s;
 }
 
-input:focus { border-color: var(--red); }
+input:focus { border-color: var(--accent); }
 input::placeholder { color: var(--text-dim); }
 
 select {
@@ -61,31 +62,59 @@ select {
   cursor: pointer;
 }
 
-select:focus { border-color: var(--red); }
+select:focus { border-color: var(--accent); }
 
-.btn-red {
-  background: var(--red);
-  color: #fff;
-  font-weight: 600;
+/* Primary white button */
+.btn-primary {
+  background: #ffffff;
+  color: #000000;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
-.btn-red:hover { background: var(--red-dim); }
+.btn-primary:hover { background: #e0e0e0; }
+.btn-primary:disabled { background: #555; color: #999; cursor: not-allowed; }
 
+/* Ghost/outline button */
 .btn-ghost {
   background: transparent;
   border: 1px solid var(--border);
   color: var(--text-dim);
 }
-.btn-ghost:hover { border-color: var(--red); color: var(--text); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--text); }
 
+/* Danger button */
 .btn-danger {
   background: transparent;
-  border: 1px solid #ff444460;
+  border: 1px solid #ff444455;
   color: #ff6666;
   font-size: 12px;
   padding: 4px 10px;
 }
-.btn-danger:hover { background: #ff11110a; }
+.btn-danger:hover { background: rgba(255,68,68,0.08); }
 
+/* Owner ban button */
+.btn-ban {
+  background: transparent;
+  border: 1px solid #ff444455;
+  color: #ff6666;
+  font-size: 12px;
+  padding: 4px 10px;
+  font-weight: 600;
+}
+.btn-ban:hover { background: rgba(255,68,68,0.12); border-color: #ff4444; }
+
+/* Unban button */
+.btn-unban {
+  background: transparent;
+  border: 1px solid #22c55e55;
+  color: #22c55e;
+  font-size: 12px;
+  padding: 4px 10px;
+  font-weight: 600;
+}
+.btn-unban:hover { background: rgba(34,197,94,0.08); border-color: #22c55e; }
+
+/* Badges */
 .badge {
   display: inline-block;
   padding: 2px 8px;
@@ -93,7 +122,8 @@ select:focus { border-color: var(--red); }
   font-size: 11px;
   font-weight: 600;
 }
-.badge-green { background: #22c55e20; color: var(--green); border: 1px solid #22c55e40; }
-.badge-red   { background: #ff121220; color: var(--red);   border: 1px solid #ff121240; }
-.badge-yellow{ background: #f59e0b20; color: var(--yellow); border: 1px solid #f59e0b40; }
-.badge-gray  { background: #88888820; color: var(--text-dim); border: 1px solid #88888840; }
+.badge-green  { background: rgba(34,197,94,0.12);  color: var(--green);    border: 1px solid rgba(34,197,94,0.3); }
+.badge-red    { background: rgba(255,68,68,0.12);   color: var(--red);      border: 1px solid rgba(255,68,68,0.3); }
+.badge-yellow { background: rgba(245,158,11,0.12);  color: var(--yellow);   border: 1px solid rgba(245,158,11,0.3); }
+.badge-gray   { background: rgba(136,136,136,0.12); color: var(--text-dim); border: 1px solid rgba(136,136,136,0.3); }
+.badge-white  { background: rgba(255,255,255,0.08); color: #fff;            border: 1px solid rgba(255,255,255,0.2); }
