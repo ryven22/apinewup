@@ -27,6 +27,7 @@ export default function DashboardPage() {
   const [search, setSearch] = useState('')
   const [copied, setCopied] = useState<string | null>(null)
   const [role, setRole] = useState<'admin' | 'owner' | null>(null)
+  const [genError, setGenError] = useState<string | null>(null)
 
   const fetchKeys = useCallback(async () => {
     const res = await fetch('/api/keys')
@@ -41,13 +42,24 @@ export default function DashboardPage() {
 
   async function generateKeys() {
     setGenerating(true)
-    await fetch('/api/keys', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ duration_days: duration, count, note: note || undefined }),
-    })
-    setNote('')
-    await fetchKeys()
+    setGenError(null)
+    try {
+      const res = await fetch('/api/keys', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ duration_days: duration, count, note: note || undefined }),
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        setGenError(body.error || `Server error (${res.status})`)
+        setGenerating(false)
+        return
+      }
+      setNote('')
+      await fetchKeys()
+    } catch (e) {
+      setGenError(e instanceof Error ? e.message : 'Network error')
+    }
     setGenerating(false)
   }
 
@@ -211,6 +223,11 @@ export default function DashboardPage() {
               {generating ? 'Generating…' : `Generate ${count > 1 ? `${count} Keys` : 'Key'} — ${durationLabel(duration)}`}
             </button>
           </div>
+          {genError && (
+            <div style={{ marginTop: 12, color: '#ff5555', fontSize: 13, background: 'rgba(255,85,85,0.1)', border: '1px solid rgba(255,85,85,0.3)', borderRadius: 8, padding: '8px 14px' }}>
+              ⚠ Failed to generate keys: {genError}
+            </div>
+          )}
         </div>
 
         {/* Keys Table */}

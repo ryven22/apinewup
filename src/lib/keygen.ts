@@ -25,7 +25,7 @@ export function daysToExpiry(days: number): string {
 
 export function durationLabel(days: number): string {
   switch (days) {
-    case 0:  return 'Lifeteam'
+    case 0:  return 'Lifetime'
     case 1:  return '1 Day'
     case 3:  return '3 Days'
     case 7:  return '7 Days'
