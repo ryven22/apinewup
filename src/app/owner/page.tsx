@@ -53,7 +53,7 @@ function ConfirmModal({ title, message, confirmLabel, confirmStyle, onConfirm, o
           </button>
           <button onClick={onConfirm} style={{
             padding: '8px 20px', fontSize: 13, fontWeight: 600,
-            borderRadius: 8, border: 'none', cursor: 'pointer',
+            borderRadius: 8, cursor: 'pointer',
             background: confirmStyle === 'danger' ? 'rgba(255,68,68,0.15)' : 'rgba(245,158,11,0.15)',
             color: confirmStyle === 'danger' ? '#ff6666' : 'var(--yellow)',
             border: `1px solid ${confirmStyle === 'danger' ? 'rgba(255,68,68,0.4)' : 'rgba(245,158,11,0.4)'}`,
