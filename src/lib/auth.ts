@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
 const COOKIE_NAME = 'modtools_session'
 
-export type Role = 'admin' | 'owner'
+export type Role = 'admin' | 'owner' | 'seller'
 
 export async function createSession(role: Role = 'admin') {
   const token = await new SignJWT({ role })
@@ -40,7 +40,6 @@ export async function deleteSession() {
   cookieStore.delete(COOKIE_NAME)
 }
 
-/** Returns the role of the current session, or null if not authenticated */
 export async function getSessionRole(): Promise<Role | null> {
   const session = await verifySession()
   if (!session) return null
